@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import './Add-Quiz.css'
+import "./Add-Quiz.css";
+
 const AddQuiz = () => {
   const [nomQuiz, setNomQuiz] = useState("");
   const [filiere, setFiliere] = useState("");
-  const [questions, setQuestions] = useState(Array.from({ length: 20 }, () => ({ question: "", reponses: ["", "", "", ""], reponseCorrecte: 0 })));
+  const [questions, setQuestions] = useState(
+    Array.from({ length: 20 }, () => ({
+      question: "",
+      reponses: ["", "", "", ""],
+      reponseCorrecte: 0,
+    }))
+  );
   const [dateFin, setDateFin] = useState("");
-  // const [idProf, setIdProf] = useState(""); // Ajoutez la logique pour obtenir l'ID du professeur
 
   const handleQuestionChange = (index, field, value) => {
     setQuestions((prevQuestions) =>
@@ -30,7 +36,6 @@ const AddQuiz = () => {
     );
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // Ajoutez la logique pour envoyer les données au serveur
@@ -40,29 +45,32 @@ const AddQuiz = () => {
     <div className="container">
       <h1>Ajouter un Quiz</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Nom du Quiz:
+        <div className="form-group">
+          <label>Nom du Quiz:</label>
           <input
             type="text"
             value={nomQuiz}
             onChange={(e) => setNomQuiz(e.target.value)}
           />
-        </label>
-        <br />
-        <label>
-          Filière:
-          <select value={filiere} onChange={(e) => setFiliere(e.target.value)}>
+        </div>
+
+        <div className="form-group">
+          <label>Filière:</label>
+          <select
+            value={filiere}
+            onChange={(e) => setFiliere(e.target.value)}
+          >
             <option value="informatique">Informatique</option>
             <option value="mathematiques">Mathématiques</option>
             {/* Ajoutez d'autres options selon vos besoins */}
           </select>
-        </label>
-        <br />
+        </div>
+
         {questions.map((question, index) => (
           <div key={index}>
             <h3>Question {index + 1}</h3>
-            <label>
-              Question:
+            <div className="form-group">
+              <label>Question:</label>
               <input
                 type="text"
                 value={question.question}
@@ -70,38 +78,33 @@ const AddQuiz = () => {
                   handleQuestionChange(index, "question", e.target.value)
                 }
               />
-            </label>
-            <br />
+            </div>
+
             <h4>Réponses:</h4>
             {question.reponses.map((reponse, reponseIndex) => (
-              <div key={reponseIndex}>
-                <label>
-                  Réponse {reponseIndex + 1}:
-                  <input
-                    type="text"
-                    value={reponse}
-                    onChange={(e) =>
-                      handleReponseChange(
-                        index,
-                        reponseIndex,
-                        e.target.value
-                      )
-                    }
-                  />
-                </label>
+              <div key={reponseIndex} className="form-group">
+                <label>Réponse {reponseIndex + 1}:</label>
+                <input
+                  type="text"
+                  value={reponse}
+                  onChange={(e) =>
+                    handleReponseChange(index, reponseIndex, e.target.value)
+                  }
+                />
               </div>
             ))}
           </div>
         ))}
-        <label>
-          Date de fin:
+
+        <div className="form-group">
+          <label>Date de fin:</label>
           <input
             type="date"
             value={dateFin}
             onChange={(e) => setDateFin(e.target.value)}
           />
-        </label>
-        <br />
+        </div>
+
         <button type="submit">Enregistrer le Quiz</button>
       </form>
     </div>
@@ -109,4 +112,3 @@ const AddQuiz = () => {
 };
 
 export default AddQuiz;
-
