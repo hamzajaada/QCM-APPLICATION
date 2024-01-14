@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const LoginForm = () => {
   const [loginData, setLoginData] = useState({
     email: '',
@@ -14,14 +14,17 @@ const LoginForm = () => {
     const { name, value } = e.target;
     setLoginData({ ...loginData, [name]: value });
   };
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("hh"+loginData);
     axios.post('http://localhost:3000/User/Login', {loginData}).then(
         res => {
-          console.log("connected!!!");
-          window.location.reload()
+          if(loginData.userType === "eleve"){
+            navigate('/Home/Etudiant')
+          }
+          else if(loginData.userType === "prof")
+          navigate('/Home/Professeur')
         })
     console.log('Formulaire soumis:', loginData);
   };
