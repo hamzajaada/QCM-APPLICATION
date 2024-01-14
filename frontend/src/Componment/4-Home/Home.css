@@ -32,7 +32,7 @@ body {
   text-align: center;
 }
 
-.container .description button.main-button {
+.container .description .main-button {
   padding: 10px 15px;
   font-size: 14px;
   color: #fff;
@@ -41,6 +41,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   margin: 20px auto;
+  text-decoration: none;
 }
 
 h2 {

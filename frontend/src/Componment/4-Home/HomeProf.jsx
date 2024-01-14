@@ -1,5 +1,6 @@
 import React from "react";
 import './Home.css';
+import { Link } from "react-router-dom";
 
 const HomeProf = () => {
   return (
@@ -7,7 +8,8 @@ const HomeProf = () => {
       <section className="description">
         <h1>Liste de quiz</h1>
         <p>Bienvenue dans votre espace de professeur. Vous pouvez ajouter, modifier, supprimer des quiz ici</p>
-        <button className="main-button">Créer un quiz</button>
+        {/* <button className="main-button">Créer un quiz</button> */}
+        <Link to='/Home/Professeur/Add-Quiz' className="main-button">Créer un quiz</Link>
       </section>
 
       <h2>Quiz en cours</h2>
