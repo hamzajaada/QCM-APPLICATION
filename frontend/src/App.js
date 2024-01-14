@@ -3,6 +3,9 @@ import { BrowserRouter , Routes ,Route } from "react-router-dom";
 import RegisterForme from './Componment/1-Register/Register'
 import LoginForm from "./Componment/2-Login/Login";
 import PageChoix from "./Componment/0-ChoixUser/Page"
+import HomeProf from "./Componment/4-Home/HomeProf";
+import HomeEtudiant from "./Componment/4-Home/HomeEtudiant";
+import AddQuiz from "./Componment/7-Add-Quiz/Add-Quiz";
 const App = () => {
   return (
     <BrowserRouter>
@@ -11,6 +14,9 @@ const App = () => {
           <Route path="/Choix" element={<PageChoix /> } />
           <Route path="/Register" element={<RegisterForme /> } />
           <Route path="/" element={<LoginForm /> } />
+          <Route path="/Home/Professeur" element={<HomeProf /> } />
+          <Route path="/Home/Etudiant" element={<HomeEtudiant /> } />
+          <Route path="/Home/Professeur/Add-Quiz" element={<AddQuiz /> } />
         </Routes>
       </div>
     </BrowserRouter>
