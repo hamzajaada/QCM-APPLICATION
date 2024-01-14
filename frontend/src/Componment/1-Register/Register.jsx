@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Register.css';
 
 const RegisterForm = () => {
-  // Utilisez le state pour gérer les valeurs des champs
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
-    filiere: '',  // Ajout du champ filière
+    filiere: '',  // Utilisez une chaîne pour stocker le choix de filière
   });
+
+  const navigate = useNavigate();
 
   // Fonction pour mettre à jour le state lorsqu'un champ change
   const handleInputChange = (e) => {
@@ -20,13 +23,30 @@ const RegisterForm = () => {
   // Fonction pour gérer la soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Ajoutez ici la logique pour soumettre les données (envoyer à un backend, etc.)
-    console.log('Formulaire soumis:', formData);
+
+    // Création d'un objet à envoyer au backend
+    const eleveData = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+      filiere: formData.filiere,
+    };
+    console.log(eleveData);
+
+    // Envoi des données au backend
+
+    axios.post('http://localhost:3000/User/Student', eleveData).then(
+      res => {
+        console.log("created!!!");
+        navigate("/");
+      })
+    console.log('Formulaire soumis:', eleveData);
   };
 
   return (
     <div className='body1'>
-    <h1>Inscription dans la Plateforme De Quiz - Ecole supérieure de technologie Essaouira</h1>
+      <h1>Inscription dans la Plateforme De Quiz - Ecole supérieure de technologie Essaouira</h1>
       <div className="register-form-container">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -71,13 +91,18 @@ const RegisterForm = () => {
           </div>
           <div className="form-group">
             <label>Filière</label>
-            <input
-              type="text"
+            <select
               name="filiere"
               value={formData.filiere}
               onChange={handleInputChange}
               required
-            />
+            >
+              <option value="">Choisissez une filière</option>
+              <option value="informatique">Informatique</option>
+              <option value="électronique">Électronique</option>
+              <option value="mécanique">Mécanique</option>
+              {/* Ajoutez d'autres options en fonction des filières disponibles */}
+            </select>
           </div>
           <button type="submit">S'inscrire</button>
         </form>
