@@ -10,6 +10,7 @@ import AddQuiz from "./Componment/7-Add-Quiz/Add-Quiz"
 import QuizPage from "./Componment/6-Quiz/Quiz";
 import UpdateQuiz from "./Componment/9-Update-Quiz/UpdateQuiz";
 import ConsulterQuiz from "./Componment/10-ConsulerQuiz/ConsulterQuiz";
+import Resultat from "./Componment/8-Resultat/Resultat";
 const App = () => {
   return (
     <BrowserRouter>
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/Home/Professeur/Quiz/:id" element={<QuizPage /> } />
           <Route path="/Home/Professeur/Quiz/Edit/:id" element={<UpdateQuiz /> } />
           <Route path="/Home/Etudiant/Quiz/:id" element={<ConsulterQuiz/>}/>
+          <Route path="/Home/Professeur/Quiz/:id/Resultat" element={<Resultat/>}/>
         </Routes>
       </div>
     </BrowserRouter>

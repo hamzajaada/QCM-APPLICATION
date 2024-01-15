@@ -8,5 +8,5 @@ const EleveSchema = new Schema({
     filiere:String,
 })
 
-const EleveModel = mongoose.model("eleve",EleveSchema);
-module.exports = EleveModel;
+const Eleve = mongoose.model("eleve",EleveSchema);
+module.exports = Eleve;

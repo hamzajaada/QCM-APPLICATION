@@ -8,5 +8,5 @@ const ProfSchema = new Schema({
     filiere: [String],
 })
 
-const Profmodel = mongoose.model("prof",ProfSchema);
-module.exports = Profmodel;
+const Prof = mongoose.model("prof",ProfSchema);
+module.exports = Prof;

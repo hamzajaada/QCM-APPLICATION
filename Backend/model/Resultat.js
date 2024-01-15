@@ -4,17 +4,17 @@ const Schema = mongoose.Schema;
 const ResultatSchema = new Schema({
   professeurId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Prof',
+    ref: 'prof',
     required: true,
   },
   etudiantId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Eleve',
+    ref: 'eleve',
     required: true,
   },
   quizId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Quiz',
+    ref: 'quiz',
     required: true,
   },
   resultat: Number
