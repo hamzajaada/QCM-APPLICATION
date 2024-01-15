@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Add-Quiz.css";
+import "./UpdateQuiz.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -116,9 +116,11 @@ const UpdateQuiz = () => {
 
   return (
     <div className="container">
-      <h1>Ajouter un Quiz</h1>
+      <h1>Modifier un Quiz</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+      {quiz.questions.map((question, index) => (
+        <div key={question._id}>
+          <div className="form-group">
           <label>Nom du Quiz:</label>
           <input
             type="text"
@@ -142,6 +144,7 @@ const UpdateQuiz = () => {
               <label>Question:</label>
               <input
                 type="text"
+                value={{}}
                 onChange={(e) =>
                   handleQuestionChange(index, "question", e.target.value)
                 }
@@ -190,6 +193,10 @@ const UpdateQuiz = () => {
         <input type="hidden" value={professeurId} />
 
         <button type="submit">Modifier le Quiz</button>
+        </div>
+      ))}
+        
+        
       </form>
     </div>
   );

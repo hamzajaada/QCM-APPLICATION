@@ -30,7 +30,7 @@ const HomeProf = () => {
             <p>{data.nomQuiz}</p>
             <div className="action-buttons">
               <Link to={`/Home/Professeur/Quiz/${data._id}`} className="read-button">Lire</Link>
-              <button className="edit-button">Edit</button>
+              <Link to={`/Home/Professeur/Quiz/Edit/${data._id}`} className="read-button">Edit</Link>
               <button className="delete-button">Supprimer</button>
               <button className="result-button">Résultat</button>
             </div>
