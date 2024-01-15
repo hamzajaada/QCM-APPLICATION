@@ -1,88 +1,14 @@
-// import React, { useEffect, useState } from "react";
-// import './ConsulterQuiz.css'
-// import axios from "axios";
-// import { useParams } from "react-router-dom";
-
-// const ConsulterQuiz = () => {
-//   const [quiz, setQuiz] = useState(null);
-//   const [answers, setAnswers] = useState([]);
-//   const { id } = useParams();
-
-//   // Charge le quiz à partir du serveur lors du montage du composant
-//   useEffect(() => {
-//     axios.get(`http://localhost:3000/Quiz/Professeur/quiz/${id}`)
-//       .then((res) => {
-//         // console.log(res.data)
-//         setQuiz(res.data);
-//       })
-//       .catch(err => console.log(err));
-//   }, [id]);
-
-//   const handleAnswerChange = (questionIndex, selectedAnswer) => {
-//     setAnswers((prevAnswers) =>
-//       prevAnswers.map((answer, index) =>
-//         index === questionIndex ? selectedAnswer : answer
-//       )
-//     );
-//   };
-  
-//   function handleSubmit(req, res) {
-    
-//   }
-
-//   return (
-//     <div className="container">
-//       {quiz && (
-//         <>
-//           <h1>{quiz.nomQuiz}</h1>
-//           <p>Filière: {quiz.filiere}</p>
-//           <p>Date de fin: {quiz.dateFin}</p>
-
-//           {quiz.questions.map((question, index) => (
-//             <div className="question" key={question._id}>
-//               <h3>{`Question ${index + 1}`}</h3>
-//               <p>{question.question}</p>
-
-//               <div>
-//                 {question.reponses.map((reponse, reponseIndex) => (
-//                   <div className="reponse" key={reponse._id}>
-//                     <input
-//                       type="radio"
-//                       id={`q${index + 1}r${reponseIndex + 1}`}
-//                       name={`q${index + 1}`}
-//                       value={reponseIndex + 1}
-//                       checked={answers[index] === reponseIndex + 1}
-//                       onChange={() => handleAnswerChange(index, reponseIndex + 1)}
-//                     />
-//                     <label htmlFor={`q${index + 1}r${reponseIndex + 1}`}>
-//                       {reponse.value}
-//                     </label>
-//                   </div>
-//                 ))}
-//               </div>
-//               <hr />
-//             </div>
-//           ))}
-//           <button onClick={handleSubmit}>Valider</button>
-//         </>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default ConsulterQuiz;
-
-
 import React, { useEffect, useState } from "react";
 import './ConsulterQuiz.css'
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ConsulterQuiz = () => {
   const [quiz, setQuiz] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [counter, setCounter] = useState(0); // Counter for correct answers
   const { id } = useParams();
+  const navigate = useNavigate();
   const etudiantId = localStorage.getItem("user");
 
   useEffect(() => {
@@ -126,15 +52,19 @@ const ConsulterQuiz = () => {
     axios.post("http://localhost:3000/Resultat/Add", resultObject)
       .then((res) => {
         console.log(res.data);
+        navigate('/Home/Etudiant')
       })
       .catch(err => console.log(err));
+    
   };
 
   return (
     <div className="container">
       <h1>{quiz && quiz.nomQuiz}</h1>
       <p>Filière: {quiz && quiz.filiere}</p>
-      <p>Date de fin: {quiz && quiz.dateFin}</p>
+      <p>Date de fin: {quiz && new Date(quiz.dateFin).toLocaleDateString()}</p>
+
+      {/* <p>Date de fin: {quiz && quiz.dateFin}</p> */}
 
       {quiz && quiz.questions.map((question, index) => (
         <div className="question" key={question._id}>
@@ -163,7 +93,7 @@ const ConsulterQuiz = () => {
       ))}
 
       <button onClick={handleSubmitQuiz}>Soumettre le quiz</button>
-      {counter !== null && <p>Résultat: {counter} correcte(s)</p>}
+      {/* {counter !== null && <p>Résultat: {counter} correcte(s)</p>} */}
     </div>
   );
 }

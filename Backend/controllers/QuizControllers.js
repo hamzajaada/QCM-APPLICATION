@@ -1,35 +1,5 @@
 const Quiz = require('../model/Quiz');
 
-// const AddQuiz = async (req, res) => {
-//   try {
-//     const {
-//       nomQuiz,
-//       filiere,
-//       questions,
-//       dateFin,
-//       professeurId,
-//     } = req.body;
-
-//     // Créer un nouvel objet Quiz avec les données reçues
-//     const newQuiz = new Quiz({
-//       nomQuiz,
-//       filiere,
-//       questions,
-//       dateFin,
-//       professeurId,
-//     });
-
-//     // Sauvegarder le quiz dans la base de données
-//     const savedQuiz = await newQuiz.save();
-
-//     // Répondre avec le quiz sauvegardé
-//     res.status(201).json(savedQuiz);
-//   } catch (error) {
-//     console.error("Erreur lors de l'ajout du quiz :", error);
-//     res.status(500).send("Erreur serveur lors de l'ajout du quiz");
-//   }
-// };
-
 const AddQuiz = async (req, res) => {
   try {
     console.log(req.body)
@@ -45,7 +15,7 @@ const AddQuiz = async (req, res) => {
 
 const GetAllQuizs = async (req, res) => {
   try {
-    const quizs = await Quiz.find();
+    const quizs = await Quiz.find({professeurId : req.params.id});
     res.status(200).json(quizs);
   } catch (error) {
     console.error("Erreur lors de la recherche des quizs :", error);
