@@ -10,11 +10,9 @@ import AddQuiz from "./Componment/7-Add-Quiz/Add-Quiz"
 import QuizPage from "./Componment/6-Quiz/Quiz";
 import UpdateQuiz from "./Componment/9-Update-Quiz/UpdateQuiz";
 import ConsulterQuiz from "./Componment/10-ConsulerQuiz/ConsulterQuiz";
-<<<<<<< HEAD
 import Header from './Componment/000-Header/header'
-=======
 import Resultat from "./Componment/8-Resultat/Resultat";
->>>>>>> 86d81272fc594930e43a2de689b37a93f692ff22
+
 const App = () => {
   return (
     <BrowserRouter>

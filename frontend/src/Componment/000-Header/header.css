@@ -7,10 +7,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 95%;
+    width: 98%;
     margin-right: auto;
     margin-left: auto;
-    border-radius: 10px;
+  
   }
   
   .header h1 {
