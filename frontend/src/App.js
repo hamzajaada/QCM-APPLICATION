@@ -10,10 +10,12 @@ import AddQuiz from "./Componment/7-Add-Quiz/Add-Quiz"
 import QuizPage from "./Componment/6-Quiz/Quiz";
 import UpdateQuiz from "./Componment/9-Update-Quiz/UpdateQuiz";
 import ConsulterQuiz from "./Componment/10-ConsulerQuiz/ConsulterQuiz";
+import Header from './Componment/000-Header/header'
 const App = () => {
   return (
     <BrowserRouter>
       <div>
+        <Header/>
         <Routes>
           <Route path="/Choix" element={<PageChoix /> } />
           <Route path="/Register" element={<RegisterForme /> } />

@@ -59,7 +59,7 @@ const Login = async (req,res)=>{
         const jsenwebtkn = jwt.sign({ user:US.username, password:password }, "hamzajaada");
         const user = US._id;
         console.log(user);
-        res.json({ jsenwebtkn, user }); 
+        res.json({ jsenwebtkn, user , userType }); 
        console.log(jsenwebtkn);
        
     } catch (err) {
