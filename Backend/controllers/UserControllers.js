@@ -47,15 +47,19 @@ const Login = async (req,res)=>{
     try {
        const {email,password,userType} = req.body.loginData
        console.log(req.body.loginData)
+       console.log(userType);
+       let US;
        if(userType === "prof") {
-        const userConnect = await PROF.findOne({ email: email }); 
+         US = await PROF.findOne({ email: email }); 
        } else if(userType === 'eleve') {
-        const userConnect = await Student.findOne({ email: email });
+         US = await Student.findOne({ email: email });
        }
-       console.log(userConnect.username);
+       console.log(US)
         // token : badge offre par le broser ;
-        const jsenwebtkn = jwt.sign({ user:userConnect.username, password:password }, "hamzajaada");
-        res.json({ jsenwebtkn, userConnect }); 
+        const jsenwebtkn = jwt.sign({ user:US.username, password:password }, "hamzajaada");
+        const user = US.username;
+        console.log(user);
+        res.json({ jsenwebtkn, user }); 
        console.log(jsenwebtkn);
        
     } catch (err) {
