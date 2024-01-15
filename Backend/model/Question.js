@@ -2,12 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Reponse = require('./Reponse')
 
-const questionSchema = new mongoose.Schema({
+const questionSchema = new Schema({
   question: {
     type: String,
     required: true,
   },
-  reponses: [Reponse.schema],
+  reponses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Reponse',
+    required: true,
+  }],
   reponseCorrecte: {
     type: Number,
     required: true,

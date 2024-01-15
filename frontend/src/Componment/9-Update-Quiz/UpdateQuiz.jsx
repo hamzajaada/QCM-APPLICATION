@@ -1,202 +1,123 @@
-import React, { useEffect, useState } from "react";
-import "./UpdateQuiz.css";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import "./UpdateQuiz.css";
+import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateQuiz = () => {
+  const [quiz, setQuiz] = useState({
+    nomQuiz: "",
+    filiere: "",
+    questions: [],
+    dateFin: "",
+    professeurId: "",
+  });
 
   const { id } = useParams();
-  const [quiz, setQuiz] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/Quiz/Professeur/quiz/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        setQuiz(res.data);
-      })
-      .catch((err) => console.log(err));
+    const fetchQuiz = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/Quiz/Professeur/quiz/${id}`
+        );
+        setQuiz(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération du quiz :", error);
+      }
+    };
+
+    fetchQuiz();
   }, [id]);
 
-  const [nomQuiz, setNomQuiz] = useState("");
-  const [filiere, setFiliere] = useState("informatique");
-  const [questions, setQuestions] = useState([]);
-  const [dateFin, setDateFin] = useState("");
-  const professeurId = "65a479396b5d99d5799839a3";
-
-  // const [reponseCorrecte, setReponseCorrecte] = useState("");
-  // const [questions, setQuestions] = useState(
-  //   Array.from({ length: 4 }, () => ({
-  //     question: "",
-  //     reponses: [
-  //       { value: { value: "" } },
-  //       { value: { value: "" } },
-  //       { value: { value: "" } },
-  //       { value: { value: "" } },
-  //     ],
-  //     reponseCorrecte: null,
-  //   }))
-  // );
-
-  useEffect(() => {
-    // Set the initial state based on the fetched quiz data
-    if (quiz) {
-      setNomQuiz(quiz.nomQuiz || "");
-      setFiliere(quiz.filiere || "informatique");
-      setQuestions(
-        quiz.questions.map((question) => ({
-          ...question,
-          reponseCorrecte: (question.reponseCorrecte || 1).toString(),
-        })) || []
-      );
-      setDateFin(quiz.dateFin || "");
-    }
-  }, [quiz]);
-
-  const handleQuestionChange = (index, field, value) => {
-    setQuestions((prevQuestions) =>
-      prevQuestions.map((question, i) =>
-        i === index ? { ...question, [field]: value } : question
-      )
-    );
+  const handleChange = (e) => {
+    setQuiz({ ...quiz, [e.target.name]: e.target.value });
   };
 
-  const handleReponseChange = (questionIndex, reponseIndex, value) => {
-    setQuestions((prevQuestions) =>
-      prevQuestions.map((question, i) =>
-        i === questionIndex
-          ? {
-              ...question,
-              reponses: question.reponses.map((reponse, j) =>
-                j === reponseIndex ? { ...reponse, value } : reponse
-              ),
-            }
-          : question
-      )
-    );
+  const handleQuestionChange = (index, e) => {
+    const updatedQuestions = [...quiz.questions];
+    updatedQuestions[index].question = e.target.value;
+    setQuiz({ ...quiz, questions: updatedQuestions });
   };
 
-  const handleReponseCorrecteChange = (questionIndex, value) => {
-    setQuestions((prevQuestions) =>
-      prevQuestions.map((question, i) =>
-        i === questionIndex ? { ...question, reponseCorrecte: value } : question
-      )
-    );
+  const handleAnswerChange = (questionIndex, answerIndex, e) => {
+    const updatedQuestions = [...quiz.questions];
+    updatedQuestions[questionIndex].reponses[answerIndex].value =
+      e.target.value;
+    setQuiz({ ...quiz, questions: updatedQuestions });
+  };
+
+  const handleCorrectAnswerChange = (questionIndex, e) => {
+    const updatedQuestions = [...quiz.questions];
+    updatedQuestions[questionIndex].reponseCorrecte = parseInt(e.target.value);
+    setQuiz({ ...quiz, questions: updatedQuestions });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const quizData = {
-        nomQuiz,
-        filiere,
-        questions: questions.map((question) => ({
-          ...question,
-          reponseCorrecte:
-            question.reponseCorrecte === null
-              ? 1
-              : parseInt(question.reponseCorrecte),
-        })),
-        dateFin,
-        professeurId,
-      };
-      console.log(quizData);
-
-      const response = await axios.post(
-        "http://localhost:3000/Quiz/Professeur/Add-Quiz",
-        quizData
-      );
-      navigate("/Home/Professeur");
-      console.log("Réponse du serveur:", response.data);
-    } catch (error) {
-      console.error("Erreur lors de l'envoi du quiz au serveur:", error);
-    }
+    console.log(quiz);
+    axios
+      .put(`http://localhost:3000/Quiz/Professeur/Update-Quiz/${id}`, { quiz })
+      .then((res) => {
+        navigate("/Home/Professeur");
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <div className="container">
-      <h1>Modifier un Quiz</h1>
+      <h1>Edit Quiz</h1>
       <form onSubmit={handleSubmit}>
-      {quiz.questions.map((question, index) => (
-        <div key={question._id}>
-          <div className="form-group">
-          <label>Nom du Quiz:</label>
-          <input
-            type="text"
-            // value={nomQuiz}
-            onChange={(e) => setNomQuiz(e.target.value)}
-          />
-        </div>
+        <label>Nom du Quiz:</label>
+        <input
+          type="text"
+          name="nomQuiz"
+          value={quiz.nomQuiz}
+          onChange={handleChange}
+        />
 
-        <div className="form-group">
-          <label>Filière:</label>
-          <select  onChange={(e) => setFiliere(e.target.value)}>
-            <option value="informatique">Informatique</option>
-            <option value="mathematiques">Mathématiques</option>
-          </select>
-        </div>
+        <label>Filière:</label>
+        <input
+          type="text"
+          name="filiere"
+          value={quiz.filiere}
+          onChange={handleChange}
+        />
 
-        {questions.map((question, index) => (
-          <div key={index}>
-            <h3>Question {index + 1}</h3>
-            <div className="form-group">
-              <label>Question:</label>
-              <input
-                type="text"
-                value={{}}
-                onChange={(e) =>
-                  handleQuestionChange(index, "question", e.target.value)
-                }
-              />
-            </div>
 
-            <h4>Réponses:</h4>
-            {question.reponses.map((reponse, reponseIndex) => (
-              <div key={reponseIndex} className="form-group">
-                <label>Réponse {reponseIndex + 1}:</label>
+        {quiz.questions.map((question, questionIndex) => (
+          <div key={questionIndex}>
+            <label>Question {questionIndex + 1}:</label>
+            <input
+              type="text"
+              value={question.question}
+              onChange={(e) => handleQuestionChange(questionIndex, e)}
+            />
+
+            {question.reponses.map((answer, answerIndex) => (
+              <div key={answerIndex}>
+                <label>Réponse {answerIndex + 1}:</label>
                 <input
                   type="text"
-                  // value={reponse.value}
+                  value={answer.value}
                   onChange={(e) =>
-                    handleReponseChange(index, reponseIndex, e.target.value)
+                    handleAnswerChange(questionIndex, answerIndex, e)
                   }
                 />
               </div>
             ))}
-            <div className="form-group">
-              <label>Reponse correct:</label>
-              <select
-                onChange={(e) =>
-                  handleReponseCorrecteChange(index, e.target.value)
-                }
-              >
-                {question.reponses.map((reponse, reponseIndex) => (
-                  <option key={reponseIndex} value={reponseIndex + 1}>
-                    {reponseIndex + 1}
-                  </option>
-                ))}
-              </select>
-            </div>
+
+            <label>Réponse Correcte:</label>
+            <input
+              type="text"
+              value={question.reponseCorrecte}
+              onChange={(e) => handleCorrectAnswerChange(questionIndex, e)}
+            />
+            <hr />
           </div>
         ))}
 
-        <div className="form-group">
-          <label>Date de fin:</label>
-          <input
-            type="date"
-            value={dateFin}
-            onChange={(e) => setDateFin(e.target.value)}
-          />
-        </div>
-
-        <input type="hidden" value={professeurId} />
-
-        <button type="submit">Modifier le Quiz</button>
-        </div>
-      ))}
-        
-        
+        <button type="submit">Modifier</button>
       </form>
     </div>
   );

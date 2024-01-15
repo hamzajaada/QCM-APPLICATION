@@ -82,7 +82,7 @@ li div {
   display: flex;
 }
 
-.container ul li div button {
+.container ul li div button, .container ul li div .button {
   padding: 10px 15px;
   font-size: 14px;
   color: #fff;
@@ -93,7 +93,10 @@ li div {
   margin: 0 2px;
 }
 
-/* Optional: Add hover effects for buttons */
+.container ul li div .button {
+  text-decoration: none;
+}
+
 button:hover {
   background-color: #0056b3;
 }

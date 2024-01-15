@@ -57,7 +57,7 @@ const Login = async (req,res)=>{
        console.log(US)
         // token : badge offre par le broser ;
         const jsenwebtkn = jwt.sign({ user:US.username, password:password }, "hamzajaada");
-        const user = US.username;
+        const user = US._id;
         console.log(user);
         res.json({ jsenwebtkn, user }); 
        console.log(jsenwebtkn);

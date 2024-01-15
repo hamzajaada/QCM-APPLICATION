@@ -5,25 +5,22 @@ import { useNavigate } from "react-router-dom";
 
 const AddQuiz = () => {
   const [nomQuiz, setNomQuiz] = useState("");
-  // const [filiere, setFiliere] = useState("");
   const [filiere, setFiliere] = useState("informatique");
-
-  // const [reponseCorrecte, setReponseCorrecte] = useState("");
   const navigate = useNavigate();
   const [questions, setQuestions] = useState(
     Array.from({ length: 4 }, () => ({
       question: "",
       reponses: [
-        { value: { value: "" } },
-        { value: { value: "" } },
-        { value: { value: "" } },
-        { value: { value: "" } },
+        { value: "" },
+        { value: "" },
+        { value: "" },
+        { value: "" },
       ],
       reponseCorrecte: null,
     }))
   );
   const [dateFin, setDateFin] = useState("");
-  const professeurId = "65a479396b5d99d5799839a3";
+  const professeurId = localStorage.getItem("user");
 
   const handleQuestionChange = (index, field, value) => {
     setQuestions((prevQuestions) =>
@@ -48,14 +45,6 @@ const AddQuiz = () => {
     );
   };
 
-  // const handleReponseCorrecteChange = (questionIndex, value) => {
-  //   setQuestions((prevQuestions) =>
-  //     prevQuestions.map((question, i) =>
-  //       i === questionIndex ? { ...question, reponseCorrecte: value } : question
-  //     )
-  //   );
-  // };
-
   const handleReponseCorrecteChange = (questionIndex, value) => {
     setQuestions((prevQuestions) =>
       prevQuestions.map((question, i) =>
@@ -72,6 +61,7 @@ const AddQuiz = () => {
         filiere,
         questions: questions.map((question) => ({
           ...question,
+          reponses: question.reponses.map((reponse) => ({ value: reponse.value })),
           reponseCorrecte:
             question.reponseCorrecte === null
               ? 1
@@ -80,7 +70,6 @@ const AddQuiz = () => {
         dateFin,
         professeurId,
       };
-      console.log(quizData);
 
       const response = await axios.post(
         "http://localhost:3000/Quiz/Professeur/Add-Quiz",
@@ -101,14 +90,13 @@ const AddQuiz = () => {
           <label>Nom du Quiz:</label>
           <input
             type="text"
-            // value={nomQuiz}
             onChange={(e) => setNomQuiz(e.target.value)}
           />
         </div>
 
         <div className="form-group">
           <label>Filière:</label>
-          <select  onChange={(e) => setFiliere(e.target.value)}>
+          <select onChange={(e) => setFiliere(e.target.value)}>
             <option value="informatique">Informatique</option>
             <option value="mathematiques">Mathématiques</option>
           </select>
@@ -133,7 +121,6 @@ const AddQuiz = () => {
                 <label>Réponse {reponseIndex + 1}:</label>
                 <input
                   type="text"
-                  // value={reponse.value}
                   onChange={(e) =>
                     handleReponseChange(index, reponseIndex, e.target.value)
                   }
@@ -141,7 +128,7 @@ const AddQuiz = () => {
               </div>
             ))}
             <div className="form-group">
-              <label>Reponse correct:</label>
+              <label>Reponse correcte:</label>
               <select
                 onChange={(e) =>
                   handleReponseCorrecteChange(index, e.target.value)
@@ -154,6 +141,7 @@ const AddQuiz = () => {
                 ))}
               </select>
             </div>
+            <hr />
           </div>
         ))}
 

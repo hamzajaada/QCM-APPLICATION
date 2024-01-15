@@ -2,6 +2,7 @@ import React from 'react';
 import './Home.css'
 import { useEffect, useState } from "react";
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 const HomeEtudiant = () => {
   const [quizs, setQuizs] = useState([])
@@ -24,11 +25,11 @@ const HomeEtudiant = () => {
       <h2>Quiz en cours</h2>
       <ul>
       {quizs.map((data) => (
-          <li>
+          <li key={data._id}>
             <p>{data.nomQuiz}</p>
             <div className="action-buttons">
-            <button>Consulter</button>
-            <button>Résultat</button>
+              <Link to={`/Home/Etudiant/Quiz/${data._id}`} className="button">Consulter</Link>
+              <button>Résultat</button>
             </div>
           </li>
         ))}
@@ -39,8 +40,9 @@ const HomeEtudiant = () => {
           <li>
             <p>{data.nomQuiz}</p>
             <div className="action-buttons">
-            <button>Consulter</button>
-            <button>Résultat</button>
+              <Link to={`/Home/Etudiant/Quiz/${data._id}`} className="button">Consulter</Link>
+            {/* <button>Consulter</button> */}
+              <button>Résultat</button>
             </div>
           </li>
         ))}

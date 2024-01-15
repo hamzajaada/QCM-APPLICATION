@@ -15,6 +15,17 @@ const HomeProf = () => {
       })
       .catch((err) => console.log(err));
   },[])
+
+  function handleDelete(id) {
+    console.log(id);
+    axios.delete(`http://localhost:3000/Quiz/Professeur/Delete-Quiz/${id}`)
+      .then((res) => {
+        console.log('fin')
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className="container">
       <section className="description">
@@ -26,13 +37,13 @@ const HomeProf = () => {
       <h2>Quiz en cours</h2>
       <ul className="quiz-list">
         {quizs.map((data) => (
-          <li>
+          <li key={data._id}>
             <p>{data.nomQuiz}</p>
             <div className="action-buttons">
-              <Link to={`/Home/Professeur/Quiz/${data._id}`} className="read-button">Lire</Link>
-              <Link to={`/Home/Professeur/Quiz/Edit/${data._id}`} className="read-button">Edit</Link>
-              <button className="delete-button">Supprimer</button>
-              <button className="result-button">Résultat</button>
+              <Link to={`/Home/Professeur/Quiz/${data._id}`} className="button">Lire</Link>
+              <Link to={`/Home/Professeur/Quiz/Edit/${data._id}`} className="button">Edit</Link>
+              <button className="button" onClick={() => handleDelete(data._id)}>Supprimer</button>
+              <button className="button">Résultat</button>
             </div>
           </li>
         ))}
@@ -44,10 +55,12 @@ const HomeProf = () => {
           <li>
             <p>{data.nomQuiz}</p>
             <div className="action-buttons">
-              <button className="read-button">Lire</button>
-              <button className="edit-button">Edit</button>
-              <button className="delete-button">Supprimer</button>
-              <button className="result-button">Résultat</button>
+            <div className="action-buttons">
+              <Link to={`/Home/Professeur/Quiz/${data._id}`} className="button">Lire</Link>
+              <Link to={`/Home/Professeur/Quiz/Edit/${data._id}`} className="button">Edit</Link>
+              <button className="button" onClick={() => handleDelete(data._id)}>Supprimer</button>
+              <button className="button">Résultat</button>
+            </div>
             </div>
           </li>
         ))}

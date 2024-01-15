@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Question = require('./Question')
-const Prof = require('./Prof')
 
 const quizSchema = new Schema({
   nomQuiz: {
@@ -14,11 +12,11 @@ const quizSchema = new Schema({
   },
   questions: [{
     question: String,
-    reponses: [{
-      value: String,
-      // autres propriétés si nécessaire
-    }],
-    reponseCorrecte: Number, // Vous avez probablement besoin de changer cela en ObjectId
+    reponses: [
+      {value: String}
+    ],
+    reponseCorrecte: Number,
+
   }],
   dateFin: {
     type: Date,
