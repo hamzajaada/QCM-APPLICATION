@@ -1,29 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Add-Quiz.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddQuiz = () => {
-  const [nomQuiz, setNomQuiz] = useState("");
-  // const [filiere, setFiliere] = useState("");
-  const [filiere, setFiliere] = useState("informatique");
+const UpdateQuiz = () => {
 
-  // const [reponseCorrecte, setReponseCorrecte] = useState("");
+  const { id } = useParams();
+  const [quiz, setQuiz] = useState(null);
   const navigate = useNavigate();
-  const [questions, setQuestions] = useState(
-    Array.from({ length: 4 }, () => ({
-      question: "",
-      reponses: [
-        { value: { value: "" } },
-        { value: { value: "" } },
-        { value: { value: "" } },
-        { value: { value: "" } },
-      ],
-      reponseCorrecte: null,
-    }))
-  );
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/Quiz/Professeur/quiz/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setQuiz(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
+
+  const [nomQuiz, setNomQuiz] = useState("");
+  const [filiere, setFiliere] = useState("informatique");
+  const [questions, setQuestions] = useState([]);
   const [dateFin, setDateFin] = useState("");
   const professeurId = "65a479396b5d99d5799839a3";
+
+  // const [reponseCorrecte, setReponseCorrecte] = useState("");
+  // const [questions, setQuestions] = useState(
+  //   Array.from({ length: 4 }, () => ({
+  //     question: "",
+  //     reponses: [
+  //       { value: { value: "" } },
+  //       { value: { value: "" } },
+  //       { value: { value: "" } },
+  //       { value: { value: "" } },
+  //     ],
+  //     reponseCorrecte: null,
+  //   }))
+  // );
+
+  useEffect(() => {
+    // Set the initial state based on the fetched quiz data
+    if (quiz) {
+      setNomQuiz(quiz.nomQuiz || "");
+      setFiliere(quiz.filiere || "informatique");
+      setQuestions(
+        quiz.questions.map((question) => ({
+          ...question,
+          reponseCorrecte: (question.reponseCorrecte || 1).toString(),
+        })) || []
+      );
+      setDateFin(quiz.dateFin || "");
+    }
+  }, [quiz]);
 
   const handleQuestionChange = (index, field, value) => {
     setQuestions((prevQuestions) =>
@@ -47,14 +76,6 @@ const AddQuiz = () => {
       )
     );
   };
-
-  // const handleReponseCorrecteChange = (questionIndex, value) => {
-  //   setQuestions((prevQuestions) =>
-  //     prevQuestions.map((question, i) =>
-  //       i === questionIndex ? { ...question, reponseCorrecte: value } : question
-  //     )
-  //   );
-  // };
 
   const handleReponseCorrecteChange = (questionIndex, value) => {
     setQuestions((prevQuestions) =>
@@ -168,10 +189,10 @@ const AddQuiz = () => {
 
         <input type="hidden" value={professeurId} />
 
-        <button type="submit">Enregistrer le Quiz</button>
+        <button type="submit">Modifier le Quiz</button>
       </form>
     </div>
   );
 };
 
-export default AddQuiz;
+export default UpdateQuiz;

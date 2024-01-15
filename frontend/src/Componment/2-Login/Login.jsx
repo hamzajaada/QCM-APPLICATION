@@ -21,10 +21,18 @@ const LoginForm = () => {
     axios.post('http://localhost:3000/User/Login', {loginData}).then(
         res => {
           if(loginData.userType === "eleve"){
+            console.log(res.data)
+            localStorage.setItem('token', res.data.jsenwebtkn)
+            localStorage.setItem('user', res.data.user)
             navigate('/Home/Etudiant')
           }
-          else if(loginData.userType === "prof")
-          navigate('/Home/Professeur')
+          else if(loginData.userType === "prof") {
+            console.log(res.data)
+            localStorage.setItem('token', res.data.jsenwebtkn)
+            localStorage.setItem('user', res.data.user)
+            navigate('/Home/Professeur')
+          }
+          
         })
     console.log('Formulaire soumis:', loginData);
   };

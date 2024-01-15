@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose")
 
 const UserRouter = require("./routes/UserRouter")
+const QuizRouter = require('./routes/QuizRouter');
 const cors = require("cors");
 const url = "mongodb://127.0.0.1:27017/QCM";
 app.use(express.urlencoded({ extended: true }));
@@ -10,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/User",UserRouter);
+app.use("/Quiz",QuizRouter);
 mongoose.connect(url).then(()=>{
     console.log("connecting!!");
 }).catch((err)=>{

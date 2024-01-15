@@ -1,6 +1,19 @@
 import React from 'react';
 import './Home.css'
+import { useEffect, useState } from "react";
+import axios from 'axios'
+
 const HomeEtudiant = () => {
+  const [quizs, setQuizs] = useState([])
+  useEffect(()=>{
+    axios.get("http://localhost:3000/Quiz/Professeur/")
+      .then((res) => {
+        const listQuizs = res.data;
+        setQuizs(listQuizs);
+        
+      })
+      .catch((err) => console.log(err));
+  },[])
   return (
     <div className='container'>
       <section className='description'>
@@ -10,51 +23,27 @@ const HomeEtudiant = () => {
       
       <h2>Quiz en cours</h2>
       <ul>
-        <li>
-          <p>Titre quiz</p>
-          <div>
+      {quizs.map((data) => (
+          <li>
+            <p>{data.nomQuiz}</p>
+            <div className="action-buttons">
             <button>Consulter</button>
             <button>Résultat</button>
-          </div>
-        </li>
-        <li>
-          <p>Titre quiz</p>
-          <div>
-            <button>Consulter</button>
-            <button>Résultat</button>
-          </div>
-        </li>
-        <li>
-          <p>Titre quiz</p>
-          <div>
-            <button>Consulter</button>
-            <button>Résultat</button>
-          </div>
-        </li>
+            </div>
+          </li>
+        ))}
       </ul>
       <h2>Mes quizs terminés</h2>
       <ul>
-        <li>
-          <p>Titre quiz</p>
-          <div>
+        {quizs.map((data) => (
+          <li>
+            <p>{data.nomQuiz}</p>
+            <div className="action-buttons">
             <button>Consulter</button>
             <button>Résultat</button>
-          </div>
-        </li>
-        <li>
-          <p>Titre quiz</p>
-          <div>
-            <button>Consulter</button>
-            <button>Résultat</button>
-          </div>
-        </li>
-        <li>
-          <p>Titre quiz</p>
-          <div>
-            <button>Consulter</button>
-            <button>Résultat</button>
-          </div>
-        </li>
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );

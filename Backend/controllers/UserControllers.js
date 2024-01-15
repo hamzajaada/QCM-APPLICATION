@@ -43,13 +43,21 @@ const ADDStudent = async (req, res) => {
         res.status(500).json("Erreur lors de la création de l'étudiant");
     }
 };
-const Login =(req,res)=>{
+const Login = async (req,res)=>{
     try {
-       const {user,password} = req.body.loginData
+       const {email,password,userType} = req.body.loginData
+       console.log(req.body.loginData)
+       if(userType === "prof") {
+        const userConnect = await PROF.findOne({ email: email }); 
+       } else if(userType === 'eleve') {
+        const userConnect = await Student.findOne({ email: email });
+       }
+       console.log(userConnect.username);
         // token : badge offre par le broser ;
-        const jsenwebtkn = jwt.sign({ user:user, password:password }, "hamzajaada");
-        res.json({ jsenwebtkn, user }); 
+        const jsenwebtkn = jwt.sign({ user:userConnect.username, password:password }, "hamzajaada");
+        res.json({ jsenwebtkn, userConnect }); 
        console.log(jsenwebtkn);
+       
     } catch (err) {
         console.log("Erreur lors de la génération du token");
         res.status(500).json({ error: "Erreur serveur" });

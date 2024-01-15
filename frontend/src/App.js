@@ -7,6 +7,7 @@ import RegisterProf from "./Componment/1-Register/RegisterProf";
 import HomeProf from "./Componment/4-Home/HomeProf"
 import HomeEtudiant from "./Componment/4-Home/HomeEtudiant";
 import AddQuiz from "./Componment/7-Add-Quiz/Add-Quiz"
+import QuizPage from "./Componment/6-Quiz/Quiz";
 const App = () => {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/Home/Professeur" element={<HomeProf /> } />
           <Route path="/Home/Etudiant" element={<HomeEtudiant /> } />
           <Route path="/Home/Professeur/Add-Quiz" element={<AddQuiz /> } />
+          <Route path="/Home/Professeur/Quiz/:id" element={<QuizPage /> } />
         </Routes>
       </div>
     </BrowserRouter>
