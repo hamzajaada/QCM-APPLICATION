@@ -5,17 +5,14 @@ import { useNavigate } from "react-router-dom";
 
 const AddQuiz = () => {
   const [nomQuiz, setNomQuiz] = useState("");
-  const [filiere, setFiliere] = useState("informatique");
+  const [filiere, setFiliere] = useState("");
   const navigate = useNavigate();
+  const fl = localStorage.getItem("filiere");
+  const filieresArray = fl.split(",");
   const [questions, setQuestions] = useState(
-    Array.from({ length: 4 }, () => ({
+    Array.from({ length: 10 }, () => ({
       question: "",
-      reponses: [
-        { value: "" },
-        { value: "" },
-        { value: "" },
-        { value: "" },
-      ],
+      reponses: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
       reponseCorrecte: null,
     }))
   );
@@ -61,7 +58,9 @@ const AddQuiz = () => {
         filiere,
         questions: questions.map((question) => ({
           ...question,
-          reponses: question.reponses.map((reponse) => ({ value: reponse.value })),
+          reponses: question.reponses.map((reponse) => ({
+            value: reponse.value,
+          })),
           reponseCorrecte:
             question.reponseCorrecte === null
               ? 1
@@ -88,17 +87,17 @@ const AddQuiz = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Nom du Quiz:</label>
-          <input
-            type="text"
-            onChange={(e) => setNomQuiz(e.target.value)}
-          />
+          <input type="text" onChange={(e) => setNomQuiz(e.target.value)} />
         </div>
 
         <div className="form-group">
           <label>Filière:</label>
           <select onChange={(e) => setFiliere(e.target.value)}>
-            <option value="informatique">Informatique</option>
-            <option value="mathematiques">Mathématiques</option>
+            {filieresArray.map((f, index) => (
+              <option key={index} value={f.trim()}>
+                {f.trim()}
+              </option>
+            ))}
           </select>
         </div>
 

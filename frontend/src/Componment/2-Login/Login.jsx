@@ -25,6 +25,8 @@ const LoginForm = () => {
             localStorage.setItem('token', res.data.jsenwebtkn)
             localStorage.setItem('user', res.data.user)
             localStorage.setItem('userType', res.data.userType)
+            localStorage.setItem('filiere', res.data.filiere)
+            
             navigate('/Home/Etudiant')
           }
           else if(loginData.userType === "prof") {
@@ -32,6 +34,7 @@ const LoginForm = () => {
             localStorage.setItem('token', res.data.jsenwebtkn)
             localStorage.setItem('user', res.data.user)
             localStorage.setItem('userType', res.data.userType)
+            localStorage.setItem('filiere', res.data.filiere)
             navigate('/Home/Professeur')
           }
           

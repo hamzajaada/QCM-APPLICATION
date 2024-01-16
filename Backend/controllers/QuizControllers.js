@@ -1,4 +1,5 @@
 const Quiz = require('../model/Quiz');
+const User = require('../model/Eleve');
 
 const AddQuiz = async (req, res) => {
   try {
@@ -16,6 +17,17 @@ const AddQuiz = async (req, res) => {
 const GetAllQuizs = async (req, res) => {
   try {
     const quizs = await Quiz.find({professeurId : req.params.id});
+    res.status(200).json(quizs);
+  } catch (error) {
+    console.error("Erreur lors de la recherche des quizs :", error);
+    res.status(500).send("Erreur serveur lors de la recherche des quizs");
+  }
+}
+
+const GetAllQuizsEtudiant = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const quizs = await Quiz.find({filiere : user.filiere});
     res.status(200).json(quizs);
   } catch (error) {
     console.error("Erreur lors de la recherche des quizs :", error);
@@ -45,9 +57,21 @@ const UpdateQuiz = async (req,res) => {
 }
 
 const DeleteQuiz = async (req, res) => {
+  // try {
+  //   console.log(req.params.id);
+  //   const deletedQuiz = await Quiz.findByIdAndDelete(req.params.id);
+  //   res.status(200).json(deletedQuiz);
+  // } catch (error) {
+  //   console.error("Erreur lors de la suppression du quiz :", error);
+  //   res.status(500).send("Erreur serveur lors de la suppression du quiz");
+  // }
+
   try {
-    console.log(req.params.id);
     const deletedQuiz = await Quiz.findByIdAndDelete(req.params.id);
+
+    // Supprimer les résultats associés au quiz
+    await Resultat.deleteMany({ quizId: req.params.id });
+
     res.status(200).json(deletedQuiz);
   } catch (error) {
     console.error("Erreur lors de la suppression du quiz :", error);
@@ -55,4 +79,4 @@ const DeleteQuiz = async (req, res) => {
   }
 }
 
-module.exports = { AddQuiz, GetAllQuizs, GetQuiz, UpdateQuiz, DeleteQuiz };
+module.exports = { AddQuiz, GetAllQuizs, GetQuiz, UpdateQuiz, DeleteQuiz, GetAllQuizsEtudiant };

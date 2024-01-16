@@ -11,13 +11,13 @@ const StudentHome = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/Quiz/Professeur/")
+      .get(`http://localhost:3000/Quiz/Etudiant/${id}`)
       .then((res) => {
         const listQuizs = res.data;
         setQuizs(listQuizs);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     axios

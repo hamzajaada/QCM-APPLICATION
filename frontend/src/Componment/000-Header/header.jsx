@@ -12,12 +12,13 @@ const StaticHeader = () => {
     const token = window.localStorage.getItem("token");
     // token est trouver
     setIsLoggedIn(token !== null);
-  }, [location.pathname]); // Effectuer la vérification au changement de chemin
+  }, [location.pathname]); 
 
   function handleLogout() {
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("userType");
     window.localStorage.removeItem("user");
+    window.localStorage.removeItem("filiere");
     setIsLoggedIn(false);
   }
 
