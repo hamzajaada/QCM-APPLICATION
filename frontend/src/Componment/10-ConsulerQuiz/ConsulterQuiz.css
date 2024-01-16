@@ -1,5 +1,5 @@
 .container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f8f8f8;
@@ -7,7 +7,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+/* h1 {
   color: #333;
 }
 
@@ -60,5 +60,5 @@ p.Résultat {
   margin-top: 20px;
   color: #333;
   font-weight: bold;
-}
+} */
 

@@ -1,6 +1,6 @@
-// Dans votre fichier React
 import React, { useState, useEffect } from "react";
-import "./header.css";
+import { Navbar, Nav } from "react-bootstrap";
+// import "./header.css";
 import { Link, useLocation } from "react-router-dom";
 
 const StaticHeader = () => {
@@ -10,9 +10,8 @@ const StaticHeader = () => {
 
   useEffect(() => {
     const token = window.localStorage.getItem("token");
-    // token est trouver
     setIsLoggedIn(token !== null);
-  }, [location.pathname]); 
+  }, [location.pathname]);
 
   function handleLogout() {
     window.localStorage.removeItem("token");
@@ -23,30 +22,35 @@ const StaticHeader = () => {
   }
 
   return (
-    <header className="header">
-      <h1>
-        {isLoggedIn ? (
-          userType === "eleve" ? (
-            <a href="/Home/Etudiant">Mon Quiz</a>
+    <Navbar bg="light" expand="lg">
+      <Navbar.Brand>
+        <h1>
+          {isLoggedIn ? (
+            userType === "eleve" ? (
+              <Link to="/Home/Etudiant">Mon Quiz</Link>
+            ) : (
+              <Link to="/Home/Professeur">Mon Quiz</Link>
+            )
           ) : (
-            <a href="/Home/Professeur">Mon Quiz</a>
-          )
-        ) : (
-          <a href="/">Mon Quiz</a>
-        )}
-      </h1>
-      <div>
-        {isLoggedIn ? (
-          <Link className="Link-header" to ="/" onClick={handleLogout}>
-            Déconnexion
-          </Link>
-        ) : (
-          <Link className="Link-header" to="/">
-            Connexion
-          </Link>
-        )}
-      </div>
-    </header>
+            <Link to="/">Mon Quiz</Link>
+          )}
+        </h1>
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="ml-auto">
+          {isLoggedIn ? (
+            <Nav.Link as={Link} to="/" onClick={handleLogout}>
+              Déconnexion
+            </Nav.Link>
+          ) : (
+            <Nav.Link as={Link} to="/">
+              Connexion
+            </Nav.Link>
+          )}
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   );
 };
 

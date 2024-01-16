@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import './Home.css';
 import { Link } from "react-router-dom";
+import { Container, Button } from "react-bootstrap";
 import axios from 'axios';
+import './Home.css';
 
 const HomeProf = () => {
   const [quizs, setQuizs] = useState([]);
@@ -16,24 +17,17 @@ const HomeProf = () => {
         setFilteredQuizs(listQuizs); 
       })
       .catch((err) => console.log(err));
-  },[id]);
+  }, [id]);
 
-  
-
-  function filtrage (filtre_categorie) {
+  function filtrage(filtre_categorie) {
     if (filtre_categorie === "enCours") {
-      console.log("En cours")
       const quizzesEnCours = quizs.filter((item) => new Date(item.dateFin) > new Date());
       setFilteredQuizs(quizzesEnCours);
-      // setQuizs(quizzesEnCours);
     } else if (filtre_categorie === "finQuiz") {
-      console.log("Fin de quiz")
       const quizzesTermines = quizs.filter((item) => new Date(item.dateFin) <= new Date());
       setFilteredQuizs(quizzesTermines);
-      // setQuizs(quizzesTermines);
     } else {
       setFilteredQuizs(quizs);
-      // setQuizs(quizs);
     }
   };
 
@@ -51,36 +45,35 @@ const HomeProf = () => {
       .catch((err) => console.log(err));
   };
 
-
   return (
-    <div className="container">
+    <Container className="mt-5 mb-5">
       <section className="description">
         <h1>Liste de quiz</h1>
         <p>Bienvenue dans votre espace de professeur. Vous pouvez ajouter, modifier, supprimer des quiz ici</p>
-        <Link to='/Home/Professeur/Add-Quiz' className="main-button">Créer un quiz</Link>
+        <Link to='/Home/Professeur/Add-Quiz' className="btn btn-primary">Créer un quiz</Link>
       </section>
       <hr />
       <section className="section-filtrage">
-        <button onClick={() => filtrage("Tout")}>Tout les quiz</button>
-        <button onClick={() => filtrage("enCours")}>Quiz en cours</button>
-        <button onClick={() => filtrage("finQuiz")}>Les quizs terminés</button>
+        <Button variant="secondary" onClick={() => filtrage("Tout")}>Tout les quiz</Button>
+        <Button variant="secondary" onClick={() => filtrage("enCours")}>Quiz en cours</Button>
+        <Button variant="secondary" onClick={() => filtrage("finQuiz")}>Les quizs terminés</Button>
       </section>
       <hr />
-      <h2>Lise de quiz</h2>
+      <h2>Liste de quiz</h2>
       <ul className="quiz-list">
         {filteredQuizs.map((data) => (
           <li key={data._id}>
             <p>{data.nomQuiz}</p>
             <div className="action-buttons">
-              <Link to={`/Home/Professeur/Quiz/${data._id}`} className="button_list">Lire</Link>
-              <Link to={`/Home/Professeur/Quiz/Edit/${data._id}`} className="button_list">Edit</Link>
-              <button className="button_list" onClick={() => handleDelete(data._id)}>Supprimer</button>
-              <Link to={`/Home/Professeur/Quiz/${data._id}/Resultat`} className="button_list">Résultat</Link>
+              <Link to={`/Home/Professeur/Quiz/${data._id}`} className="btn btn-primary">Lire</Link>
+              <Link to={`/Home/Professeur/Quiz/Edit/${data._id}`} className="btn btn-warning">Edit</Link>
+              <Button variant="danger" onClick={() => handleDelete(data._id)}>Supprimer</Button>
+              <Link to={`/Home/Professeur/Quiz/${data._id}/Resultat`} className="btn btn-info">Résultat</Link>
             </div>
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 };
 

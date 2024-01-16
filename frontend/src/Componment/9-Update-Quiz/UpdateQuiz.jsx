@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./UpdateQuiz.css";
 import { useParams, useNavigate } from "react-router-dom";
+import { Container, Form, Button, Col, Row } from "react-bootstrap";
+// import "./UpdateQuiz.css"; // Ajoutez votre fichier de style personnalisé si nécessaire
 
 const UpdateQuiz = () => {
   const [quiz, setQuiz] = useState({
@@ -65,61 +66,80 @@ const UpdateQuiz = () => {
   };
 
   return (
-    <div className="container">
-      <h1>Edit Quiz</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Nom du Quiz:</label>
-        <input
-          type="text"
-          name="nomQuiz"
-          value={quiz.nomQuiz}
-          onChange={handleChange}
-        />
+    <Container  className="mt-5 mb-5">
+      <h1 className="mt-4 mb-4">Modification de quiz</h1>
+      <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col>
+            <Form.Group>
+              <Form.Label>Nom du Quiz:</Form.Label>
+              <Form.Control
+                type="text"
+                name="nomQuiz"
+                value={quiz.nomQuiz}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label>Filière:</Form.Label>
+              <Form.Control
+                type="text"
+                name="filiere"
+                value={quiz.filiere}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-        <label>Filière:</label>
-        <input
-          type="text"
-          name="filiere"
-          value={quiz.filiere}
-          onChange={handleChange}
-        />
-
+          </Col>
+        </Row>
 
         {quiz.questions.map((question, questionIndex) => (
           <div key={questionIndex}>
-            <label>Question {questionIndex + 1}:</label>
-            <input
-              type="text"
-              value={question.question}
-              onChange={(e) => handleQuestionChange(questionIndex, e)}
-            />
+            <Form.Group>
+              <Form.Label>Question {questionIndex + 1}:</Form.Label>
+              <Form.Control
+                type="text"
+                value={question.question}
+                onChange={(e) => handleQuestionChange(questionIndex, e)}
+              />
+            </Form.Group>
 
             {question.reponses.map((answer, answerIndex) => (
               <div key={answerIndex}>
-                <label>Réponse {answerIndex + 1}:</label>
-                <input
-                  type="text"
-                  value={answer.value}
-                  onChange={(e) =>
-                    handleAnswerChange(questionIndex, answerIndex, e)
-                  }
-                />
+                <Form.Group>
+                  <Form.Label>Réponse {answerIndex + 1}:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={answer.value}
+                    onChange={(e) =>
+                      handleAnswerChange(questionIndex, answerIndex, e)
+                    }
+                  />
+                </Form.Group>
               </div>
             ))}
 
-            <label>Réponse Correcte:</label>
-            <input
-              type="text"
-              value={question.reponseCorrecte}
-              onChange={(e) => handleCorrectAnswerChange(questionIndex, e)}
-            />
+            <Form.Group>
+              <Form.Label>Réponse Correcte:</Form.Label>
+              <Form.Control
+                type="number"
+                value={question.reponseCorrecte}
+                min={1}
+                max={4}
+                onChange={(e) => handleCorrectAnswerChange(questionIndex, e)}
+              />
+            </Form.Group>
             <hr />
           </div>
         ))}
 
-        <button type="submit">Modifier</button>
-      </form>
-    </div>
+        <Button type="submit" variant="primary">
+          Modifier
+        </Button>
+      </Form>
+    </Container>
   );
 };
 

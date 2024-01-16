@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./Resultat.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Container, Table } from "react-bootstrap";
+// import "./Resultat.css";
 
 const Resultat = () => {
   const [quizName, setQuizName] = useState("");
   const [results, setResults] = useState([]);
   const { id } = useParams();
+
   useEffect(() => {
     axios
       .get(`http://localhost:3000/Resultat/Professeur/Quiz/${id}/Resultat`)
@@ -18,16 +20,15 @@ const Resultat = () => {
     axios
       .get(`http://localhost:3000/Quiz/Professeur/quiz/${id}`)
       .then((res) => {
-        // console.log("Quiz Name : " + res.data);
         setQuizName(res.data.nomQuiz);
       })
       .catch((err) => console.log(err));
   }, [id]);
 
   return (
-    <div className="container">
+    <Container className="mt-5 mb-5">
       <h1>Résultats de {quizName}</h1>
-      <table>
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>Élève</th>
@@ -42,8 +43,8 @@ const Resultat = () => {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Container>
   );
 };
 

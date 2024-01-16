@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import './ConsulterQuiz.css'
+import './ConsulterQuiz.css';
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 const ConsulterQuiz = () => {
   const [quiz, setQuiz] = useState(null);
   const [answers, setAnswers] = useState([]);
-  const [counter, setCounter] = useState(0); // Counter for correct answers
+  const [counter, setCounter] = useState(0); 
   const { id } = useParams();
   const navigate = useNavigate();
   const etudiantId = localStorage.getItem("user");
@@ -55,46 +56,40 @@ const ConsulterQuiz = () => {
         navigate('/Home/Etudiant')
       })
       .catch(err => console.log(err));
-    
   };
 
   return (
-    <div className="container">
+    <Container className="mt-5 mb-5">
       <h1>{quiz && quiz.nomQuiz}</h1>
       <p>Filière: {quiz && quiz.filiere}</p>
       <p>Date de fin: {quiz && new Date(quiz.dateFin).toLocaleDateString()}</p>
 
-      {/* <p>Date de fin: {quiz && quiz.dateFin}</p> */}
-
       {quiz && quiz.questions.map((question, index) => (
-        <div className="question" key={question._id}>
-          <h3>{`Question ${index + 1}`}</h3>
-          <p>{question.question}</p>
+        <Card className="mb-3" key={question._id}>
+          <Card.Body>
+            <Card.Title>{`Question ${index + 1}`}</Card.Title>
+            <Card.Text>{question.question}</Card.Text>
 
-          <div>
-            {question.reponses.map((reponse, reponseIndex) => (
-              <div className="reponse" key={reponseIndex}>
-                <input
+            <Form>
+              {question.reponses.map((reponse, reponseIndex) => (
+                <Form.Check
+                  key={reponseIndex}
                   type="radio"
                   id={`q${index + 1}r${reponseIndex + 1}`}
-                  name={`q${index + 1}`}
-                  value={reponseIndex + 1}
+                  label={reponse.value}
                   checked={answers[index] === reponseIndex + 1}
                   onChange={() => handleAnswerChange(index, reponseIndex + 1)}
                 />
-                <label htmlFor={`q${index + 1}r${reponseIndex + 1}`}>
-                  {reponse.value}
-                </label>
-              </div>
-            ))}
-          </div>
-          <hr />
-        </div>
+              ))}
+            </Form>
+          </Card.Body>
+        </Card>
       ))}
 
-      <button onClick={handleSubmitQuiz}>Soumettre le quiz</button>
-      {/* {counter !== null && <p>Résultat: {counter} correcte(s)</p>} */}
-    </div>
+      <Button variant="primary" onClick={handleSubmitQuiz} className="mt-3">
+        Soumettre le quiz
+      </Button>
+    </Container>
   );
 }
 

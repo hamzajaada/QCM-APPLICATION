@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Register.css';
+import { Container, Form, Button } from 'react-bootstrap';
+// import './Register.css';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -9,22 +10,19 @@ const RegisterForm = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    filiere: '',  // Utilisez une chaîne pour stocker le choix de filière
+    filiere: '',
   });
 
   const navigate = useNavigate();
 
-  // Fonction pour mettre à jour le state lorsqu'un champ change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Fonction pour gérer la soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Création d'un objet à envoyer au backend
     const eleveData = {
       username: formData.username,
       email: formData.email,
@@ -32,9 +30,6 @@ const RegisterForm = () => {
       confirmPassword: formData.confirmPassword,
       filiere: formData.filiere,
     };
-    console.log(eleveData);
-
-    // Envoi des données au backend
 
     axios.post('http://localhost:3000/User/Student', eleveData).then(
       res => {
@@ -45,53 +40,54 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className='body1'>
+    <Container className="mt-5 mb-5">
       <h1>Inscription dans la Plateforme De Quiz - Ecole supérieure de technologie Essaouira</h1>
-      <div className="register-form-container">
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nom d'utilisateur</label>
-            <input
+      <div >
+        <Form onSubmit={handleSubmit}>
+          <Form.Group>
+            <Form.Label>Nom d'utilisateur</Form.Label>
+            <Form.Control
               type="text"
               name="username"
               value={formData.username}
               onChange={handleInputChange}
               required
             />
-          </div>
-          <div className="form-group">
-            <label>E-mail</label>
-            <input
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>E-mail</Form.Label>
+            <Form.Control
               type="email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
               required
             />
-          </div>
-          <div className="form-group">
-            <label>Mot de passe</label>
-            <input
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Mot de passe</Form.Label>
+            <Form.Control
               type="password"
               name="password"
               value={formData.password}
               onChange={handleInputChange}
               required
             />
-          </div>
-          <div className="form-group">
-            <label>Confirmer le mot de passe</label>
-            <input
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Confirmer le mot de passe</Form.Label>
+            <Form.Control
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
               required
             />
-          </div>
-          <div className="form-group">
-            <label>Filière</label>
-            <select
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Filière</Form.Label>
+            <Form.Control
+              as="select"
               name="filiere"
               value={formData.filiere}
               onChange={handleInputChange}
@@ -101,14 +97,16 @@ const RegisterForm = () => {
               <option value="informatique">Informatique</option>
               <option value="électronique">Électronique</option>
               <option value="mécanique">Mécanique</option>
-              {/* Ajoutez d'autres options en fonction des filières disponibles */}
-            </select>
-          </div>
-          <button type="submit">S'inscrire</button>
-        </form>
+            </Form.Control>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            S'inscrire
+          </Button>
+        </Form>
       </div>
-    </div>
+    </Container>
   );
 };
 
 export default RegisterForm;
+

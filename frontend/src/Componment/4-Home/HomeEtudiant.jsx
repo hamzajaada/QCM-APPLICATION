@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Container} from "react-bootstrap";
 
 const StudentHome = () => {
   const [quizs, setQuizs] = useState([]);
   const [completedQuizzes, setCompletedQuizzes] = useState([]);
-  const [IncompletedQuizzes, setIncompletedQuizzes] = useState([]);
-
+  const [incompletedQuizzes, setIncompletedQuizzes] = useState([]);
   const id = localStorage.getItem("user");
 
   useEffect(() => {
@@ -23,7 +23,6 @@ const StudentHome = () => {
     axios
       .get(`http://localhost:3000/Resultat/Etudiant/${id}/CompletedQuizzes`)
       .then((res) => {
-        console.log("Completed Quizzes:", res.data);
         const completedQuizzesList = res.data;
         setCompletedQuizzes(completedQuizzesList);
       })
@@ -32,9 +31,8 @@ const StudentHome = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/Resultat//Etudiant/${id}/IncompletedQuizzes`)
+      .get(`http://localhost:3000/Resultat/Etudiant/${id}/IncompletedQuizzes`)
       .then((res) => {
-        console.log("Incompleted Quizzes:", res.data);
         const incompletedQuizzesList = res.data;
         setIncompletedQuizzes(incompletedQuizzesList);
       })
@@ -42,41 +40,39 @@ const StudentHome = () => {
   }, [id]);
 
   return (
-    <div className="container">
+    <Container className="mt-5 mb-5">
       <section className="description">
         <h1>Liste de quiz</h1>
         <p>
-          Bienvenue dans votre espace d'étudiant. Vous pouvez Consulter, Voir
-          les résultats des quiz ici
+          Bienvenue dans votre espace d'étudiant. Vous pouvez consulter et voir
+          les résultats des quiz ici.
         </p>
       </section>
 
       <h2>Quiz en cours</h2>
-      <ul>
-        {IncompletedQuizzes.map((data) => (
-          <li key={data._id}>
+      <ul className="list-unstyled">
+        {incompletedQuizzes.map((data) => (
+          <li key={data._id} className="mb-3">
             <p>{data?.nomQuiz}</p>
-            <div className="action-buttons">
-              <Link to={`/Home/Etudiant/Quiz/${data._id}`} className="button_list">
-                Consulter
-              </Link>
-            </div>
+            <Link
+              to={`/Home/Etudiant/Quiz/${data._id}`}
+              className="btn btn-primary"
+            >
+              Consulter
+            </Link>
           </li>
         ))}
       </ul>
-
       <h2>Quiz Terminé</h2>
-      <ul>
+      <ul className="list-unstyled">
         {completedQuizzes.map((data) => (
-          <li key={data._id}>
+          <li key={data._id} className="mb-3">
             <p>{data?.quizId?.nomQuiz}</p>
-            <div className="action-buttons">
-              <p>Résultat: {data?.resultat}</p>
-            </div>
+            <p>Résultat: {data?.resultat}</p>
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 };
 

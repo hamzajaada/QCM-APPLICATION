@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import "./Add-Quiz.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Container, Form, Button } from "react-bootstrap";
+import axios from "axios";
+// import "./Add-Quiz.css";
 
 const AddQuiz = () => {
   const [nomQuiz, setNomQuiz] = useState("");
@@ -82,82 +83,66 @@ const AddQuiz = () => {
   };
 
   return (
-    <div className="container">
-      <h1>Ajouter un Quiz</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Nom du Quiz:</label>
-          <input type="text" onChange={(e) => setNomQuiz(e.target.value)} />
-        </div>
+    <Container className="mt-5 mb-5">
+      <h1 className="mb-4">Ajouter un Quiz</h1>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>Nom du Quiz:</Form.Label>
+          <Form.Control type="text" onChange={(e) => setNomQuiz(e.target.value)} />
+        </Form.Group>
 
-        <div className="form-group">
-          <label>Filière:</label>
-          <select onChange={(e) => setFiliere(e.target.value)}>
+        <Form.Group>
+          <Form.Label>Filière:</Form.Label>
+          <Form.Control as="select" onChange={(e) => setFiliere(e.target.value)}>
             {filieresArray.map((f, index) => (
               <option key={index} value={f.trim()}>
                 {f.trim()}
               </option>
             ))}
-          </select>
-        </div>
+          </Form.Control>
+        </Form.Group>
 
         {questions.map((question, index) => (
           <div key={index}>
-            <h3>Question {index + 1}</h3>
-            <div className="form-group">
-              <label>Question:</label>
-              <input
-                type="text"
-                onChange={(e) =>
-                  handleQuestionChange(index, "question", e.target.value)
-                }
-              />
-            </div>
+            <h3 className="mb-3">Question {index + 1}</h3>
+            <Form.Group>
+              <Form.Label>Question:</Form.Label>
+              <Form.Control type="text" onChange={(e) => handleQuestionChange(index, "question", e.target.value)} />
+            </Form.Group>
 
             <h4>Réponses:</h4>
             {question.reponses.map((reponse, reponseIndex) => (
-              <div key={reponseIndex} className="form-group">
-                <label>Réponse {reponseIndex + 1}:</label>
-                <input
-                  type="text"
-                  onChange={(e) =>
-                    handleReponseChange(index, reponseIndex, e.target.value)
-                  }
-                />
-              </div>
+              <Form.Group key={reponseIndex}>
+                <Form.Label>Réponse {reponseIndex + 1}:</Form.Label>
+                <Form.Control type="text" onChange={(e) => handleReponseChange(index, reponseIndex, e.target.value)} />
+              </Form.Group>
             ))}
-            <div className="form-group">
-              <label>Reponse correcte:</label>
-              <select
-                onChange={(e) =>
-                  handleReponseCorrecteChange(index, e.target.value)
-                }
-              >
+            <Form.Group>
+              <Form.Label>Réponse correcte:</Form.Label>
+              <Form.Control as="select" onChange={(e) => handleReponseCorrecteChange(index, e.target.value)}>
                 {question.reponses.map((reponse, reponseIndex) => (
                   <option key={reponseIndex} value={reponseIndex + 1}>
                     {reponseIndex + 1}
                   </option>
                 ))}
-              </select>
-            </div>
+              </Form.Control>
+            </Form.Group>
             <hr />
           </div>
         ))}
 
-        <div className="form-group">
-          <label>Date de fin:</label>
-          <input
-            type="date"
-            value={dateFin}
-            onChange={(e) => setDateFin(e.target.value)}
-          />
-        </div>
+        <Form.Group>
+          <Form.Label>Date de fin:</Form.Label>
+          <Form.Control type="date" value={dateFin} onChange={(e) => setDateFin(e.target.value)} />
+        </Form.Group>
 
         <input type="hidden" value={professeurId} />
 
-        <button type="submit">Enregistrer le Quiz</button>
-      </form>
-    </div>
+        <Button variant="primary" type="submit" className="mt-3">
+          Enregistrer le Quiz
+        </Button>
+      </Form>
+    </Container>
   );
 };
 
