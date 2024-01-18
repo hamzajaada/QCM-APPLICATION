@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Container, Table } from "react-bootstrap";
-// import "./Resultat.css";
 
 const Resultat = () => {
   const [quizName, setQuizName] = useState("");
@@ -11,14 +10,14 @@ const Resultat = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/Resultat/Professeur/Quiz/${id}/Resultat`)
+      .get(`http://localhost:8080/Resultat/Professeur/Quiz/${id}/Resultat`)
       .then((res) => {
         setResults(res.data);
       })
       .catch((err) => console.log(err));
 
     axios
-      .get(`http://localhost:3000/Quiz/Professeur/quiz/${id}`)
+      .get(`http://localhost:8080/Quiz/Professeur/quiz/${id}`)
       .then((res) => {
         setQuizName(res.data.nomQuiz);
       })
@@ -36,12 +35,18 @@ const Resultat = () => {
           </tr>
         </thead>
         <tbody>
-          {results.map((result, index) => (
-            <tr key={index}>
-              <td>{result.etudiantId.username}</td>
-              <td>{result.resultat}</td>
+          {results.length > 0 ? (
+            results.map((result, index) => (
+              <tr key={index}>
+                <td>{result.etudiantId.username}</td>
+                <td>{result.resultat}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={2}>Aucun résultat disponible pour le moment.</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
     </Container>

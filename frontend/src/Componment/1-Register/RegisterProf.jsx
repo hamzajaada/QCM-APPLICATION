@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container,  Form, Button } from "react-bootstrap";
-// import './RegisterProf.css';
 import axios from "axios";
 
 const RegisterProf = () => {
@@ -28,7 +27,7 @@ const RegisterProf = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:3000/User/Prof", { formData }).then((res) => {
+    axios.post("http://localhost:8080/User/Prof", { formData }).then((res) => {
       console.log("created!!!");
       navigate("/");
     });

@@ -4,24 +4,13 @@ import { Link } from "react-router-dom";
 import { Container} from "react-bootstrap";
 
 const StudentHome = () => {
-  const [quizs, setQuizs] = useState([]);
   const [completedQuizzes, setCompletedQuizzes] = useState([]);
   const [incompletedQuizzes, setIncompletedQuizzes] = useState([]);
   const id = localStorage.getItem("user");
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/Quiz/Etudiant/${id}`)
-      .then((res) => {
-        const listQuizs = res.data;
-        setQuizs(listQuizs);
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/Resultat/Etudiant/${id}/CompletedQuizzes`)
+      .get(`http://localhost:8080/Resultat/Etudiant/${id}/CompletedQuizzes`)
       .then((res) => {
         const completedQuizzesList = res.data;
         setCompletedQuizzes(completedQuizzesList);
@@ -31,7 +20,7 @@ const StudentHome = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/Resultat/Etudiant/${id}/IncompletedQuizzes`)
+      .get(`http://localhost:8080/Resultat/Etudiant/${id}/IncompletedQuizzes`)
       .then((res) => {
         const incompletedQuizzesList = res.data;
         setIncompletedQuizzes(incompletedQuizzesList);
@@ -50,28 +39,36 @@ const StudentHome = () => {
       </section>
 
       <h2>Quiz en cours</h2>
-      <ul className="list-unstyled">
-        {incompletedQuizzes.map((data) => (
-          <li key={data._id} className="mb-3">
-            <p>{data?.nomQuiz}</p>
-            <Link
-              to={`/Home/Etudiant/Quiz/${data._id}`}
-              className="btn btn-primary"
-            >
-              Consulter
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {incompletedQuizzes.length > 0 ? (
+        <ul className="list-unstyled">
+          {incompletedQuizzes.map((data) => (
+            <li key={data._id} className="mb-3">
+              <p>{data?.nomQuiz}</p>
+              <Link
+                to={`/Home/Etudiant/Quiz/${data._id}`}
+                className="btn btn-primary"
+              >
+                Consulter
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Aucun quiz en cours disponible pour le moment.</p>
+      )}
       <h2>Quiz Terminé</h2>
-      <ul className="list-unstyled">
-        {completedQuizzes.map((data) => (
-          <li key={data._id} className="mb-3">
-            <p>{data?.quizId?.nomQuiz}</p>
-            <p>Résultat: {data?.resultat}</p>
-          </li>
-        ))}
-      </ul>
+      {completedQuizzes.length > 0 ? (
+        <ul className="list-unstyled">
+          {completedQuizzes.map((data) => (
+            <li key={data._id} className="mb-3">
+              <p>{data?.quizId?.nomQuiz}</p>
+              <p>Résultat: {data?.resultat}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Aucun quiz terminé disponible pour le moment.</p>
+      )}
     </Container>
   );
 };

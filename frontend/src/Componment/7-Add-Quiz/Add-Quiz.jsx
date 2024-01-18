@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
 import axios from "axios";
-// import "./Add-Quiz.css";
 
 const AddQuiz = () => {
   const [nomQuiz, setNomQuiz] = useState("");
-  const [filiere, setFiliere] = useState("");
+  const [filiere, setFiliere] = useState("All");
   const navigate = useNavigate();
   const fl = localStorage.getItem("filiere");
   const filieresArray = fl.split(",");
   const [questions, setQuestions] = useState(
-    Array.from({ length: 10 }, () => ({
+    Array.from({ length: 2 }, () => ({
       question: "",
       reponses: [{ value: "" }, { value: "" }, { value: "" }, { value: "" }],
       reponseCorrecte: null,
@@ -72,7 +71,7 @@ const AddQuiz = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:3000/Quiz/Professeur/Add-Quiz",
+        "http://localhost:8080/Quiz/Professeur/Add-Quiz",
         quizData
       );
       navigate("/Home/Professeur");
@@ -88,12 +87,18 @@ const AddQuiz = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Nom du Quiz:</Form.Label>
-          <Form.Control type="text" onChange={(e) => setNomQuiz(e.target.value)} />
+          <Form.Control
+            type="text"
+            onChange={(e) => setNomQuiz(e.target.value)}
+          />
         </Form.Group>
 
         <Form.Group>
           <Form.Label>Filière:</Form.Label>
-          <Form.Control as="select" onChange={(e) => setFiliere(e.target.value)}>
+          <Form.Control
+            as="select"
+            onChange={(e) => setFiliere(e.target.value)}
+          >
             {filieresArray.map((f, index) => (
               <option key={index} value={f.trim()}>
                 {f.trim()}
@@ -107,19 +112,34 @@ const AddQuiz = () => {
             <h3 className="mb-3">Question {index + 1}</h3>
             <Form.Group>
               <Form.Label>Question:</Form.Label>
-              <Form.Control type="text" onChange={(e) => handleQuestionChange(index, "question", e.target.value)} />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleQuestionChange(index, "question", e.target.value)
+                }
+              />
             </Form.Group>
 
             <h4>Réponses:</h4>
             {question.reponses.map((reponse, reponseIndex) => (
               <Form.Group key={reponseIndex}>
                 <Form.Label>Réponse {reponseIndex + 1}:</Form.Label>
-                <Form.Control type="text" onChange={(e) => handleReponseChange(index, reponseIndex, e.target.value)} />
+                <Form.Control
+                  type="text"
+                  onChange={(e) =>
+                    handleReponseChange(index, reponseIndex, e.target.value)
+                  }
+                />
               </Form.Group>
             ))}
             <Form.Group>
               <Form.Label>Réponse correcte:</Form.Label>
-              <Form.Control as="select" onChange={(e) => handleReponseCorrecteChange(index, e.target.value)}>
+              <Form.Control
+                as="select"
+                onChange={(e) =>
+                  handleReponseCorrecteChange(index, e.target.value)
+                }
+              >
                 {question.reponses.map((reponse, reponseIndex) => (
                   <option key={reponseIndex} value={reponseIndex + 1}>
                     {reponseIndex + 1}
@@ -133,7 +153,11 @@ const AddQuiz = () => {
 
         <Form.Group>
           <Form.Label>Date de fin:</Form.Label>
-          <Form.Control type="date" value={dateFin} onChange={(e) => setDateFin(e.target.value)} />
+          <Form.Control
+            type="date"
+            value={dateFin}
+            onChange={(e) => setDateFin(e.target.value)}
+          />
         </Form.Group>
 
         <input type="hidden" value={professeurId} />

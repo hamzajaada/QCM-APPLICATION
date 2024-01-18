@@ -57,21 +57,9 @@ const UpdateQuiz = async (req,res) => {
 }
 
 const DeleteQuiz = async (req, res) => {
-  // try {
-  //   console.log(req.params.id);
-  //   const deletedQuiz = await Quiz.findByIdAndDelete(req.params.id);
-  //   res.status(200).json(deletedQuiz);
-  // } catch (error) {
-  //   console.error("Erreur lors de la suppression du quiz :", error);
-  //   res.status(500).send("Erreur serveur lors de la suppression du quiz");
-  // }
-
   try {
+    console.log(req.params.id);
     const deletedQuiz = await Quiz.findByIdAndDelete(req.params.id);
-
-    // Supprimer les résultats associés au quiz
-    await Resultat.deleteMany({ quizId: req.params.id });
-
     res.status(200).json(deletedQuiz);
   } catch (error) {
     console.error("Erreur lors de la suppression du quiz :", error);

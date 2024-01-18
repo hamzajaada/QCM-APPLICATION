@@ -38,17 +38,9 @@ const GetIncompletedQuizzesByEtudiant = async (req, res) => {
   try {
     const etudiantId = req.params.id;
     const user = await User.findById(etudiantId);
-
-    // Récupérer les résultats pour l'étudiant
     const results = await Resultat.find({ etudiantId });
-
-    // Extraire les IDs des quiz terminés
     const completedQuizzes = results.map(result => result.quizId.toString());
-
-    // Récupérer les quiz non passés par l'étudiant
     const notCompletedQuizzes = await Quiz.find({ _id: { $nin: completedQuizzes }, filiere: user.filiere });
-    // const IncompletedQuizes = await notCompletedQuizzes.
-
     console.log("not completed quize: " + notCompletedQuizzes);
     res.status(200).json(notCompletedQuizzes);
   } catch (error) {

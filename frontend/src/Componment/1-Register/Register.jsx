@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Form, Button } from 'react-bootstrap';
-// import './Register.css';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -31,7 +30,7 @@ const RegisterForm = () => {
       filiere: formData.filiere,
     };
 
-    axios.post('http://localhost:3000/User/Student', eleveData).then(
+    axios.post('http://localhost:8080/User/Student', eleveData).then(
       res => {
         console.log("created!!!");
         navigate("/");

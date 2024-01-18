@@ -10,7 +10,7 @@ const HomeProf = () => {
   const id = localStorage.getItem('user');
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/Quiz/Professeur/${id}`)
+    axios.get(`http://localhost:8080/Quiz/Professeur/${id}`)
       .then((res) => {
         const listQuizs = res.data;
         setQuizs(listQuizs);
@@ -32,15 +32,10 @@ const HomeProf = () => {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:3000/Quiz/Professeur/Delete-Quiz/${id}`)
+    axios.delete(`http://localhost:8080/Quiz/Professeur/Delete-Quiz/${id}`)
       .then(() => {
         console.log('Quiz supprimé avec succès');
-        axios.get("http://localhost:3000/Quiz/Professeur/")
-          .then((res) => {
-            const listQuizs = res.data;
-            setQuizs(listQuizs);
-          })
-          .catch((err) => console.log(err));
+        window.location.reload();
       })
       .catch((err) => console.log(err));
   };
@@ -60,7 +55,8 @@ const HomeProf = () => {
       </section>
       <hr />
       <h2>Liste de quiz</h2>
-      <ul className="quiz-list">
+      {filteredQuizs.length > 0 ? (
+        <ul className="quiz-list">
         {filteredQuizs.map((data) => (
           <li key={data._id}>
             <p>{data.nomQuiz}</p>
@@ -73,6 +69,10 @@ const HomeProf = () => {
           </li>
         ))}
       </ul>
+      ) : (
+        <p>Aucun quiz disponible pour le moment.</p>
+      )}
+      
     </Container>
   );
 };

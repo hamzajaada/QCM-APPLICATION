@@ -1,18 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
-// import "./Page.css";
+
 
 const HomePage = () => {
   const navigate = useNavigate();
 
   const handleStudentLogin = () => {
-    // Redirige vers la page de connexion pour les étudiants
     navigate("/Register");
   };
 
   const handleProfessorLogin = () => {
-    // Redirige vers la page de connexion pour les professeurs
     navigate("/RegisterProf");
   };
 

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import './ConsulterQuiz.css';
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Card, Form, Button } from "react-bootstrap";
 
 const ConsulterQuiz = () => {
   const [quiz, setQuiz] = useState(null);
@@ -13,11 +12,9 @@ const ConsulterQuiz = () => {
   const etudiantId = localStorage.getItem("user");
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/Quiz/Professeur/quiz/${id}`)
+    axios.get(`http://localhost:8080/Quiz/Professeur/quiz/${id}`)
       .then((res) => {
-        console.log(res.data)
         setQuiz(res.data);
-        // Initialize answers array with default values
         setAnswers(Array(res.data.questions.length).fill(null));
       })
       .catch(err => console.log(err));
@@ -32,7 +29,6 @@ const ConsulterQuiz = () => {
   };
 
   const handleSubmitQuiz = () => {
-    // Compare answers and calculate the counter
     let correctAnswersCounter = 0;
     quiz.questions.forEach((question, index) => {
       if (answers[index] === question.reponseCorrecte) {
@@ -41,7 +37,6 @@ const ConsulterQuiz = () => {
     });
     setCounter(correctAnswersCounter);
 
-    // Create the result object
     const resultObject = {
       quizId: quiz._id,
       professeurId: quiz.professeurId,
@@ -49,8 +44,7 @@ const ConsulterQuiz = () => {
       resultat: correctAnswersCounter,
     };
 
-    // Send the resultObject to the server (you need to implement this)
-    axios.post("http://localhost:3000/Resultat/Add", resultObject)
+    axios.post("http://localhost:8080/Resultat/Add", resultObject)
       .then((res) => {
         console.log(res.data);
         navigate('/Home/Etudiant')

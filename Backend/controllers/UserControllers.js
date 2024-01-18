@@ -3,7 +3,6 @@ const Student = require("../model/Eleve")
 const jwt = require("jsonwebtoken");
 const ADDPROF = async (req, res) => {
     const formData = req.body.formData;
-    // Vous pouvez également déstructurer formData pour extraire les champs individuels.
     const { username, email, password, confirmPassword, filiere } = formData;
     const COMPASS = confirmPassword;
     const PASS = password;

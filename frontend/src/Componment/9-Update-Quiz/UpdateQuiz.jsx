@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Form, Button, Col, Row } from "react-bootstrap";
-// import "./UpdateQuiz.css"; // Ajoutez votre fichier de style personnalisé si nécessaire
 
 const UpdateQuiz = () => {
   const [quiz, setQuiz] = useState({
@@ -20,7 +19,7 @@ const UpdateQuiz = () => {
     const fetchQuiz = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/Quiz/Professeur/quiz/${id}`
+          `http://localhost:8080/Quiz/Professeur/quiz/${id}`
         );
         setQuiz(response.data);
       } catch (error) {
@@ -58,7 +57,7 @@ const UpdateQuiz = () => {
     e.preventDefault();
     console.log(quiz);
     axios
-      .put(`http://localhost:3000/Quiz/Professeur/Update-Quiz/${id}`, { quiz })
+      .put(`http://localhost:8080/Quiz/Professeur/Update-Quiz/${id}`, { quiz })
       .then((res) => {
         navigate("/Home/Professeur");
       })

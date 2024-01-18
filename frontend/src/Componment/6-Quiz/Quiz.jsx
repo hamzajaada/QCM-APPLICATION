@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import './Quiz.css';
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Container, Card, Badge } from "react-bootstrap";
@@ -9,7 +8,7 @@ const QuizPage = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/Quiz/Professeur/quiz/${id}`)
+    axios.get(`http://localhost:8080/Quiz/Professeur/quiz/${id}`)
       .then((res) => {
         setQuiz(res.data);
       })
